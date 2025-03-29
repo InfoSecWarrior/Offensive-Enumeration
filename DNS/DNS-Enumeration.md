@@ -257,15 +257,42 @@ Examples of commonly used Indian government subdomains:
 - rti.india.gov.in
 - covid19.india.gov.in
 
-## Public DNS Servers
+---
+
+### Public DNS Servers
+
+**The Top Free Public DNS Servers**
+
 Common public DNS servers:
 
-```bash
-- 8.8.8.8       # Google DNS
-- 8.8.4.4       # Google DNS
-- 64.6.64.6     # Verisign DNS
-```
+| **Provider** | **Primary DNS** | **Secondary DNS** |
+| --- | --- | --- |
+| Google | 8.8.8.8 | 8.8.4.4 |
+| Verisign DNS | 64.6.64.6 | 64.6.65.6 |
+| Cloudflare | 1.1.1.1 | 1.0.0.1 |
+| Control D | 76.76.2.0 | 76.76.10.0 |
+| Quad9 | 9.9.9.9 | 149.112.112.112 |
+| OpenDNS Home | 208.67.222.222 | 208.67.220.220 |
+| AdGuard DNS | 94.140.14.14 | 94.140.15.15 |
+| CleanBrowsing | 185.228.168.9 | 185.228.169.9 |
+| Alternate DNS | 76.76.19.19 | 76.223.122.150 |
+| DNS.WATCH | 84.200.69.80 | 84.200.70.40 |
+| Comodo Secure DNS | 8.26.56.26 | 8.20.247.20 |
+| OpenNIC | 192.71.245.208 | 94.247.43.254 |
+| Yandex DNS | 77.88.8.8 | 77.88.8.1 |
+| Hurricane Electric | 74.82.42.42 | — |
+| Neustar DNS | 64.6.64.6 | 64.6.65.6 |
 
+---
 
+### IPv6 DNS Servers List
 
+| **Provider** | **Primary IPv6 DNS** | **Secondary IPv6 DNS** |
+| --- | --- | --- |
+| **Google IPv6** | 2001:4860:4860::8888 | 2001:4860:4860::8844 |
+| **Cloudflare IPv6** | 2606:4700:4700::1111 | 2606:4700:4700::1001 |
+| **Quad9 IPv6** | 2620:fe::fe | 2620:fe::9 |
+| **AdGuard IPv6** | 2a10:50c0::ad1:ff | 2a10:50c0::ad2:ff |
+| **CleanBrowsing IPv6** | 2a0d:2a00:1::2 | 2a0d:2a00:2::2 |
 
+---
