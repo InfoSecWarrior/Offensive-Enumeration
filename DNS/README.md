@@ -201,3 +201,110 @@ Subfinder is a subdomain discovery tool that discovers valid subdomains for webs
 	# subfinder -d example.com -silent
 
 	# subfinder -d example.com -nW -silent -o /dev/shm/result.txt
+
+
+
+
+
+---
+
+# Why DNS Enumeration is Important
+
+- **Information Gathering** – It allows attackers and security testers to gather data about the target's network.  
+- **Identifying Attack Surfaces** – Misconfigured DNS records, exposed subdomains, and outdated infrastructure can be potential entry points.  
+- **Social Engineering** – Collected data can be used to craft more targeted phishing or social engineering attacks.  
+- **Pentesting & Red Teaming** – Understanding the DNS infrastructure helps in simulating real-world attack scenarios.
+
+---
+
+# Types of DNS Enumeration
+
+1. **Direct Domain Enumeration**  
+   - Identifying subdomains and associated records through direct queries.
+
+2. **Reverse DNS Lookup**  
+   - Resolving an IP address back to its domain name.
+
+3. **Zone Transfer (AXFR) Enumeration**  
+   - Attempting to transfer the entire DNS zone file from a misconfigured DNS server.
+
+4. **Brute-Force Subdomain Discovery**  
+   - Trying common subdomain names to identify valid ones.
+
+5. **PTR Record Lookup**  
+   - Resolving IP addresses to domain names.
+
+6. **Certificate Transparency Logs**  
+   - Checking for subdomains and domains listed in publicly available SSL/TLS certificates.
+
+7. **WHOIS Lookup**  
+   - Gathering domain registration and ownership details.
+
+---
+
+# Key DNS Enumeration Tools
+
+| Tool        | Purpose                               | Example Command                                             |
+|-------------|---------------------------------------|-------------------------------------------------------------|
+| nslookup    | Query DNS records                     | `nslookup armourinfosec.com`                                 |
+| dig         | Detailed DNS lookup                   | `dig armourinfosec.com ANY`                                  |
+| host        | Simple DNS lookup                     | `host armourinfosec.com`                                     |
+| nmap        | DNS and port scanning                 | `nmap -p 53 --script=dns-brute armourinfosec.com`            |
+| dnsrecon    | Automated DNS enumeration             | `dnsrecon -d armourinfosec.com`                              |
+| dnsenum     | Brute force DNS enumeration           | `dnsenum armourinfosec.com`                                  |
+| sublist3r   | Subdomain enumeration                 | `sublist3r -d armourinfosec.com`                             |
+| crt.sh      | Certificate search for subdomains     | [crt.sh link](https://crt.sh/?q=armourinfosec.com) |
+
+---
+
+
+
+---
+
+# Example DNS Enumeration Commands
+
+1. **Find all DNS records using `dig`:**
+
+```bash
+dig armourinfosec.com ANY
+```
+
+2. **Reverse lookup for PTR records using `dig`:**
+
+```bash
+dig -x 192.168.1.43
+```
+
+3. **Find subdomains using `dnsrecon`:**
+
+```bash
+dnsrecon -d armourinfosec.com -t std
+```
+
+4. **Find subdomains using `sublist3r`:**
+
+```bash
+sublist3r -d armourinfosec.com
+```
+
+5. **Perform zone transfer using `dig`:**
+
+```bash
+dig axfr @ns1.armourinfosec.com armourinfosec.com
+```
+
+6. **Identify DNS servers using `nslookup`:**
+
+```bash
+nslookup -type=NS armourinfosec.com
+```
+
+7. **Enumerate DNS records with `nmap`:**
+
+```bash
+nmap -p 53 --script=dns-brute armourinfosec.com
+```
+
+---
+
+
