@@ -76,24 +76,13 @@ sometimes get additional info about server features or version.
 ------------------------------------------------------------------------
 
 ## Summary Table
+| Command/Tool                | Purpose                                           |
+|-----------------------------|---------------------------------------------------|
+| `nc <target> <port>`        | Grab banner, discover protocol version            |
+| `nmap --script=vnc-info ...`| Fingerprint VNC version and authentication        |
+| `nmap --script=vnc-* ...`   | Run all VNC-related NSE scripts                   |
+| `vncviewer ...`             | Manual connection test, may show info             |
 
-  -----------------------------------------------------------------------
-  Command/Tool                                Purpose
-  ------------------------------------------- ---------------------------
-  `nc <target> <port>`                        Grab banner, discover
-                                              protocol version
-
-  `nmap --script=vnc-info ...`                Fingerprint VNC version and
-                                              authentication
-
-  `nmap --script=vnc-* ...`                   Run all VNC-related NSE
-                                              scripts
-
-  `vncviewer ...`                             Manual connection test, may
-                                              show info
-  -----------------------------------------------------------------------
-
-------------------------------------------------------------------------
 
 ## Key Points
 
