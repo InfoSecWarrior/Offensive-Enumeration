@@ -1,0 +1,111 @@
+VNC-Version-Detection
+
+VNC Version Detection
+
+Detecting the version of a VNC server is a critical part of enumeration
+and vulnerability assessment. The following approaches combine
+command-line tools and service queries commonly used in penetration
+testing and network reconnaissance.
+
+Example Target: bee-box
+
+Suppose you have access to a device ("bee-box") via SSH and are
+investigating VNC servers on your internal network.
+
+## Commands & Techniques
+
+### 1. Netcat for Banner Grabbing
+
+Simple banner grabbing may reveal VNC protocol details or version:
+
+    nc -v 192.168.1.201 5901
+
+Both `nc 192.168.1.201 5901` and `nc -v 192.168.1.201 5901` attempt a
+raw TCP connection to the VNC port.
+
+The VNC server should respond with a protocol version string, e.g.,
+`RFB 003.008`, which indicates VNC version 3.8.
+
+------------------------------------------------------------------------
+
+### 2. Nmap Service Version Detection & Scripts
+
+Service scan and script execution:
+
+    nmap -v -sT -sV -A --script vnc-info.nse -p 5901 192.168.1.201
+
+-   `-sT`: TCP connect scan.
+-   `-sV`: Version detection.
+-   `-A`: Aggressive scan, includes OS, version, script, and traceroute.
+-   `--script vnc-info.nse`: Runs the NSE script targeting VNC info.
+-   `-p 5901`: Target port.
+
+Sweep multiple ports and include all default scripts:
+
+    nmap -v -sV -sT --script=vnc-info -p 5901-5910 192.168.1.235
+
+Wildcard script scan for VNC:
+
+    nmap -v -sV -sT --script=vnc-* -p 5903 192.168.1.31
+
+Runs all available NSE scripts related to VNC.
+
+Targeted VNC info extraction:
+
+    nmap -v -sV -sT --script=vnc-info.nse -p 5903 192.168.1.31
+
+Reports protocol/version and authentication methods.
+
+------------------------------------------------------------------------
+
+### 3. VNCViewer for Manual Testing and Version Discovery
+
+Viewers can be used to probe a VNC service, sometimes displaying version
+info in debug or verbose mode. Also, they support connection attempts
+with custom password files.
+
+    vncviewer 192.168.1.235:5901
+    vncviewer -h
+    vncviewer -passwd filename 192.168.1.235:5901
+
+Use these to attempt connections, test for authentication prompts, and
+sometimes get additional info about server features or version.
+
+    vncviewer -passwd vncpassword.txt 192.168.1.235:5901
+
+------------------------------------------------------------------------
+
+## Summary Table
+
+  -----------------------------------------------------------------------
+  Command/Tool                                Purpose
+  ------------------------------------------- ---------------------------
+  `nc <target> <port>`                        Grab banner, discover
+                                              protocol version
+
+  `nmap --script=vnc-info ...`                Fingerprint VNC version and
+                                              authentication
+
+  `nmap --script=vnc-* ...`                   Run all VNC-related NSE
+                                              scripts
+
+  `vncviewer ...`                             Manual connection test, may
+                                              show info
+  -----------------------------------------------------------------------
+
+------------------------------------------------------------------------
+
+## Key Points
+
+-   Banner grabbing via Netcat is quick and can reveal VNC protocol
+    version.
+-   Nmap scripts provide structured version info, authentication
+    methods, and even server implementation details.
+-   Manual probing (vncviewer) is helpful for confirming interactive
+    behaviors (e.g., password prompts) and server responses.
+-   Version details are crucial for mapping vulnerabilities and deciding
+    next security steps.
+
+By using these techniques and commands, you can efficiently enumerate
+available VNC services and pinpoint installed versions for further
+analysis and security review.
