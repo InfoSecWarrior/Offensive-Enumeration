@@ -18,7 +18,47 @@ gauplus is an enhanced version of **gau (GetAllUrls)** that fetches URLs from mu
 ---
 
 ## ⚙️ Installation
-Ensure that you have Go properly installed and configured, then run:
+Ensure that you have Go properly installed and configured, if you don't have go then follow the below given steps:
+
+**Install go lang:**
+
+Download go archive file from : https://go.dev/doc/install
+
+Then extract the archive in /usr/local using tar command:
+
+```bash
+tar -xvf  go1.25.1.linux-amd64.tar -C /usr/local
+
+```
+
+Then add path to PATH environment variable:
+
+```bash
+export PATH=$PATH/usr/local/go/bin
+```
+
+Run:
+
+```bash
+go version
+```
+
+Then to install gauplus run:
+
+```bash
+go install [github.com/bp0lr/gauplus@latest](http://github.com/bp0lr/gauplus@latest)
+```
+
+Search for gauplus binary in $HOME/go/bin and add the location in variable path location:
+
+```bash
+export PATH=$HOME/go/bin
+```
+
+Then to check if the gauplus is working:
+```bash
+ gauplus -h
+```
 
 ```bash
 go install github.com/bp0lr/gauplus@latest
